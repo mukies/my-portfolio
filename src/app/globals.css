@@ -1,26 +1,198 @@
 @import "tailwindcss";
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 245, 245, 245;
+  --background-end-rgb: 255, 255, 255;
+  --accent-rgb: 75, 85, 255;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 10, 10, 20;
+  --background-end-rgb: 20, 20, 35;
+  --accent-rgb: 100, 110, 255;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  overflow-x: hidden;
+  background-repeat: no-repeat;
+  transition-behavior: smooth;
+  scroll-behavior: smooth;
+  scroll-snap-type: mandatory;
+}
+
+/* Custom Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Custom Cursor */
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transition: transform 0.2s ease;
+}
+
+.cursor-dot {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background-color: rgb(var(--accent-rgb));
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  transition: opacity 0.2s ease;
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(var(--accent-rgb), 0.5);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9998;
+  transition: all 0.15s ease-out;
+}
+
+/* Scale for links and buttons */
+a:hover ~ .cursor-ring,
+button:hover ~ .cursor-ring {
+  transform: translate(-50%, -50%) scale(1.5);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(var(--background-start-rgb));
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--accent-rgb), 0.7);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--accent-rgb), 1);
+}
+
+/* Section styles */
+section {
+  padding: 5rem 1rem;
+}
+
+@media (min-width: 768px) {
+  section {
+    padding: 8rem 2rem;
+  }
+}
+
+/* Container utility */
+.container-custom {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Project card animations */
+.project-card {
+  transition: all 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-10px);
+}
+
+/* Skill bar animations */
+.skill-bar {
+  position: relative;
+  height: 10px;
+  border-radius: 5px;
+  background: rgba(var(--foreground-rgb), 0.1);
+  overflow: hidden;
+}
+
+.skill-progress {
+  height: 100%;
+  background: rgb(var(--accent-rgb));
+  border-radius: 5px;
+}
+
+/* Form input effects */
+.form-input {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.form-input input,
+.form-input textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid rgba(var(--foreground-rgb), 0.1);
+  border-radius: 5px;
+  background: transparent;
+  transition: border-color 0.3s ease;
+}
+
+.form-input label {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  color: rgba(var(--foreground-rgb), 0.6);
+}
+
+.form-input input:focus,
+.form-input textarea:focus,
+.form-input input:not(:placeholder-shown),
+.form-input textarea:not(:placeholder-shown) {
+  border-color: rgb(var(--accent-rgb));
+  outline: none;
+}
+
+.form-input input:focus ~ label,
+.form-input textarea:focus ~ label,
+.form-input input:not(:placeholder-shown) ~ label,
+.form-input textarea:not(:placeholder-shown) ~ label {
+  top: -0.75rem;
+  left: 0.5rem;
+  font-size: 0.75rem;
+  padding: 0 0.25rem;
+  background-color: rgb(var(--background-start-rgb));
+  color: rgb(var(--accent-rgb));
 }

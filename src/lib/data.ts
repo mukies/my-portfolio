@@ -1,0 +1,92 @@
+export const projects = [
+  {
+    id: 1,
+    title: 'E-commerce Platform',
+    description: 'A fully responsive e-commerce website with product filtering, cart functionality, and secure checkout.',
+    image: '/images/profile.jpg',
+    tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Stripe'],
+    demoUrl: '#',
+    codeUrl: '#',
+  },
+  {
+    id: 2,
+    title: 'Task Management App',
+    description: 'A drag-and-drop task management application with team collaboration features.',
+    image: '/images/profile.jpg',
+    tags: ['React', 'Redux', 'Node.js', 'MongoDB'],
+    demoUrl: '#',
+    codeUrl: '#',
+  },
+  {
+    id: 3,
+    title: 'Fitness Tracking Dashboard',
+    description: 'A comprehensive dashboard for tracking workouts, nutrition, and progress with data visualization.',
+    image: '/images/profile.jpg',
+    tags: ['React', 'Chart.js', 'Firebase', 'Tailwind CSS'],
+    demoUrl: '#',
+    codeUrl: '#',
+  },
+  {
+    id: 4,
+    title: 'Real Estate Listing Platform',
+    description: 'A property listing website with advanced search filters, map integration, and virtual tours.',
+    image: '/images/profile.jpg',
+    tags: ['Next.js', 'TypeScript', 'Google Maps API', 'Prisma'],
+    demoUrl: '#',
+    codeUrl: '#',
+  },
+  {
+    id: 5,
+    title: 'Social Media Dashboard',
+    description: 'An analytics dashboard for tracking engagement across multiple social media platforms.',
+    image: '/images/profile.jpg',
+    tags: ['React', 'D3.js', 'Express', 'OAuth'],
+    demoUrl: '#',
+    codeUrl: '#',
+  },
+  {
+    id: 6,
+    title: 'Weather Application',
+    description: 'A beautiful weather app with 7-day forecast, location-based weather, and animated backgrounds.',
+    image: '/images/profile.jpg',
+    tags: ['React Native', 'Weather API', 'Geolocation', 'Animation'],
+    demoUrl: '#',
+    codeUrl: '#',
+  },
+];
+
+export const skills = [
+  {
+    category: 'Frontend',
+    items: [
+      { name: 'React', level: 95 },
+      { name: 'Next.js', level: 90 },
+      { name: 'TypeScript', level: 85 },
+      { name: 'HTML/CSS', level: 98 },
+      { name: 'Tailwind CSS', level: 92 },
+      { name: 'Framer Motion', level: 88 },
+    ],
+  },
+  {
+    category: 'Backend',
+    items: [
+      { name: 'Node.js', level: 85 },
+      { name: 'Express', level: 80 },
+      { name: 'MongoDB', level: 75 },
+      { name: 'Firebase', level: 82 },
+      { name: 'REST API', level: 90 },
+      { name: 'GraphQL', level: 78 },
+    ],
+  },
+  {
+    category: 'Tools & Others',
+    items: [
+      { name: 'Git/GitHub', level: 88 },
+      { name: 'Figma', level: 85 },
+      { name: 'Jest', level: 80 },
+      { name: 'Docker', level: 70 },
+      { name: 'AWS', level: 65 },
+      { name: 'CI/CD', level: 75 },
+    ],
+  },
+];
