@@ -54,6 +54,7 @@ export default function AboutMe() {
 
   return (
     <section 
+    id='about'
       ref={parallaxRef}
       className="relative py-32 overflow-hidden bg-gradient-to-br from-slate-900 via-gray-900 to-black"
     >

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useTheme } from '@/context/ThemeContext';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 
 export default function Header() {
@@ -19,88 +19,373 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Animation variants
+  const headerVariants = {
+    initial: { 
+      y: -100, 
+      opacity: 0,
+      backdropFilter: "blur(0px)"
+    },
+    animate: { 
+      y: 0, 
+      opacity: 1,
+      backdropFilter: scrolled ? "blur(12px)" : "blur(0px)",
+      transition: {
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1]
+      }
+    }
+  };
+
+  const logoVariants = {
+    initial: { 
+      scale: 0,
+      rotate: -180
+    },
+    animate: { 
+      scale: 1,
+      rotate: 0,
+      transition: {
+        duration: 1,
+        ease: [0.22, 1, 0.36, 1],
+        delay: 0.2
+      }
+    },
+    hover: {
+      scale: 1.08,
+      rotate: [0, -5, 5, 0],
+      transition: {
+        duration: 0.4,
+        ease: "easeInOut"
+      }
+    },
+    tap: {
+      scale: 0.95,
+      transition: {
+        duration: 0.1
+      }
+    }
+  };
+
+  const navItemVariants = {
+    initial: { 
+      y: -20, 
+      opacity: 0 
+    },
+    animate: (index:number) => ({
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        delay: 0.3 + (index * 0.1),
+        ease: [0.22, 1, 0.36, 1]
+      }
+    }),
+    hover: {
+      y: -4,
+      scale: 1.05,
+      transition: {
+        duration: 0.2,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const mobileMenuVariants = {
+    initial: {
+      opacity: 0,
+      height: 0,
+      y: -20
+    },
+    animate: {
+      opacity: 1,
+      height: "auto",
+      y: 0,
+      transition: {
+        duration: 0.4,
+        ease: [0.22, 1, 0.36, 1],
+        staggerChildren: 0.05
+      }
+    },
+    exit: {
+      opacity: 0,
+      height: 0,
+      y: -20,
+      transition: {
+        duration: 0.3,
+        ease: [0.22, 1, 0.36, 1]
+      }
+    }
+  };
+
+  const mobileItemVariants = {
+    initial: {
+      x: -20,
+      opacity: 0
+    },
+    animate: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.3,
+        ease: "easeOut"
+      }
+    },
+    exit: {
+      x: -20,
+      opacity: 0,
+      transition: {
+        duration: 0.2
+      }
+    },
+    hover: {
+      x: 8,
+      backgroundColor: "rgba(59, 130, 246, 0.1)",
+      transition: {
+        duration: 0.2
+      }
+    }
+  };
+
+  const hamburgerVariants = {
+    initial: { scale: 0 },
+    animate: { 
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        delay: 0.4,
+        ease: [0.22, 1, 0.36, 1]
+      }
+    },
+    hover: {
+      scale: 1.1,
+      transition: {
+        duration: 0.2
+      }
+    },
+    tap: {
+      scale: 0.9,
+      transition: {
+        duration: 0.1
+      }
+    }
+  };
+
+  const navItems = ['Home', 'About', 'Projects', 'Skills', 'Contact'];
+
   return (
     <motion.header
-      className={`fixed top-0 left-0 right-0 z-50 py-4 px-6 transition-all duration-300 ${
+      className={`fixed  top-0 left-0 right-0 z-50 py-4 px-6 transition-all duration-500 ${
         scrolled
-          ? 'bg-white/80 dark:bg-black/80 backdrop-blur-md shadow-lg'
-          : 'bg-transparent'
+          ? 'bg-white/85 dark:bg-black/85 backdrop-blur-md shadow-lg border-b border-gray-200/20 dark:border-gray-700/20'
+          : 'bg-transparent border-transparent'
       }`}
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6 }}
+      variants={headerVariants}
+      initial="initial"
+      animate="animate"
     >
       <div className="container-custom flex justify-between items-center">
+        {/* Logo */}
         <motion.div
-          className="text-2xl font-bold"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          className="text-2xl font-bold relative"
+          variants={logoVariants}
+          initial="initial"
+          animate="animate"
+          whileHover="hover"
+          whileTap="tap"
         >
-          <a href="#" className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-violet-600 dark:from-blue-400 dark:to-violet-400">
-            MY<span className="font-light">PORTFOLIO</span>
-          </a>
+          <motion.a 
+            href="#" 
+            className="relative inline-block"
+          >
+            <motion.span 
+              className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-violet-600 dark:from-blue-400 dark:via-purple-400 dark:to-violet-400"
+              animate={{
+                backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            >
+              MY
+            </motion.span>
+            <span className="font-light text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-violet-600 dark:from-blue-400 dark:via-purple-400 dark:to-violet-400">
+              PORTFOLIO
+            </span>
+            
+            {/* Animated underline */}
+            {/* <motion.div
+              className="absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-600 to-violet-600 dark:from-blue-400 dark:to-violet-400"
+              initial={{ width: 0 }}
+              whileHover={{
+                width: "100%",
+                transition: { duration: 0.3 }
+              }}
+            /> */}
+          </motion.a>
         </motion.div>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
           <ul className="flex space-x-8">
-            {['Home', 'About', 'Projects', 'Skills', 'Contact'].map((item) => (
-              <motion.li key={item} whileHover={{ y: -3 }}>
-                <a
+            {navItems.map((item, index) => (
+              <motion.li 
+                key={item}
+                custom={index}
+                variants={navItemVariants}
+                initial="initial"
+                animate="animate"
+                whileHover="hover"
+                className="relative"
+              >
+                <motion.a
                   href={`#${item.toLowerCase()}`}
-                  className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  className="relative text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 font-medium"
                 >
                   {item}
-                </a>
+                  {/* Hover effect dot */}
+                  <motion.div
+                    className="absolute -top-2 left-1/2 w-1 h-1 bg-blue-600 dark:bg-blue-400 rounded-full"
+                    initial={{ scale: 0, x: "-50%" }}
+                    whileHover={{
+                      scale: 1,
+                      transition: { duration: 0.2 }
+                    }}
+                  />
+                </motion.a>
               </motion.li>
             ))}
           </ul>
-          <ThemeToggle />
+          
+          {/* Theme Toggle with animation */}
+          <motion.div
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ 
+              scale: 1, 
+              rotate: 0,
+              transition: {
+                duration: 0.6,
+                delay: 0.8,
+                ease: [0.22, 1, 0.36, 1]
+              }
+            }}
+            whileHover={{ 
+              scale: 1.1,
+              rotate: 180,
+              transition: { duration: 0.3 }
+            }}
+          >
+            <ThemeToggle />
+          </motion.div>
         </nav>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Menu Button and Theme Toggle */}
         <div className="md:hidden flex items-center space-x-4">
-          <ThemeToggle />
-          <button
+          <motion.div
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ 
+              scale: 1, 
+              rotate: 0,
+              transition: {
+                duration: 0.6,
+                delay: 0.5,
+                ease: [0.22, 1, 0.36, 1]
+              }
+            }}
+            whileHover={{ 
+              scale: 1.1,
+              rotate: 180,
+              transition: { duration: 0.3 }
+            }}
+          >
+            <ThemeToggle />
+          </motion.div>
+          
+          <motion.button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="focus:outline-none"
+            className="focus:outline-none p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             aria-label="Toggle menu"
+            variants={hamburgerVariants}
+            initial="initial"
+            animate="animate"
+            whileHover="hover"
+            whileTap="tap"
           >
             <div className="w-6 flex flex-col items-end justify-center gap-1.5">
-              <span className={`block h-0.5 bg-current transition-all duration-300 ${mobileMenuOpen ? 'w-6 rotate-45 translate-y-2' : 'w-6'}`}></span>
-              <span className={`block h-0.5 bg-current transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : 'w-4'}`}></span>
-              <span className={`block h-0.5 bg-current transition-all duration-300 ${mobileMenuOpen ? 'w-6 -rotate-45 -translate-y-2' : 'w-5'}`}></span>
+              <motion.span 
+                className="block h-0.5 bg-current"
+                animate={{
+                  width: mobileMenuOpen ? "24px" : "24px",
+                  rotate: mobileMenuOpen ? 45 : 0,
+                  y: mobileMenuOpen ? 8 : 0,
+                }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              />
+              <motion.span 
+                className="block h-0.5 bg-current"
+                animate={{
+                  width: mobileMenuOpen ? "0px" : "16px",
+                  opacity: mobileMenuOpen ? 0 : 1,
+                }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              />
+              <motion.span 
+                className="block h-0.5 bg-current"
+                animate={{
+                  width: mobileMenuOpen ? "24px" : "20px",
+                  rotate: mobileMenuOpen ? -45 : 0,
+                  y: mobileMenuOpen ? -8 : 0,
+                }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              />
             </div>
-          </button>
+          </motion.button>
         </div>
       </div>
 
       {/* Mobile Navigation */}
-      <motion.nav
-        className={`md:hidden absolute left-0 right-0 bg-white dark:bg-gray-900 shadow-xl ${
-          mobileMenuOpen ? 'block' : 'hidden'
-        }`}
-        initial={{ opacity: 0, height: 0 }}
-        animate={{
-          opacity: mobileMenuOpen ? 1 : 0,
-          height: mobileMenuOpen ? 'auto' : 0,
-        }}
-        transition={{ duration: 0.3 }}
-      >
-        <ul className="flex flex-col py-4">
-          {['Home', 'About', 'Projects', 'Skills', 'Contact'].map((item) => (
-            <li key={item}>
-              <a
-                href={`#${item.toLowerCase()}`}
-                className="block py-3 px-6 hover:bg-gray-100 dark:hover:bg-gray-800"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {item}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </motion.nav>
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.nav
+            className="md:hidden absolute left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-xl border-t border-gray-200/20 dark:border-gray-700/20 overflow-hidden"
+            variants={mobileMenuVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            <ul className="flex flex-col py-4">
+              {navItems.map((item, index) => (
+                <motion.li 
+                  key={item}
+                  variants={mobileItemVariants}
+                  custom={index}
+                  whileHover="hover"
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <motion.a
+                    href={`#${item.toLowerCase()}`}
+                    className="block py-4 px-6 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 font-medium relative"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item}
+                    <motion.div
+                      className="absolute left-0 top-0 w-1 h-full bg-blue-600 dark:bg-blue-400"
+                      initial={{ scaleY: 0 }}
+                      whileHover={{
+                        scaleY: 1,
+                        transition: { duration: 0.2 }
+                      }}
+                      style={{ originY: 0.5 }}
+                    />
+                  </motion.a>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 }

@@ -5,9 +5,7 @@ import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
 
 export default function Hero() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  
+  const ref = useRef<HTMLDivElement>(null);  
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start start', 'end start']
@@ -28,7 +26,6 @@ export default function Hero() {
       const { clientX, clientY } = e;
       const { innerWidth, innerHeight } = window;
       
-      setMousePosition({ x: clientX, y: clientY });
       mouseX.set((clientX - innerWidth / 2) * 0.02);
       mouseY.set((clientY - innerHeight / 2) * 0.02);
     };
@@ -67,16 +64,6 @@ export default function Hero() {
         </div>
       </motion.div>
       
-      <motion.div
-        className="absolute w-3 h-3 bg-purple-400 rounded-full opacity-40 pointer-events-none z-5"
-        style={{
-          x: useTransform(mouseX, x => x * 0.5),
-          y: useTransform(mouseY, y => y * 0.5),
-          left: mousePosition.x - 6,
-          top: mousePosition.y - 6,
-        }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      />
 
       {/* Main Content */}
       <div className="container mx-auto px-6 relative z-10">
@@ -114,7 +101,7 @@ export default function Hero() {
             transition={{ delay: 0.4, duration: 0.8 }}
           >
             <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 dark:from-blue-400 dark:via-purple-400 dark:to-indigo-400 bg-clip-text text-transparent font-black">
-              John Doe
+              Mukesh Bhattarai
             </span>
           </motion.h1>
           
@@ -128,11 +115,12 @@ export default function Hero() {
               sequence={[
                 'Frontend Developer',
                 1000,
-                'UI/UX Designer',
-                1000,
+                
                 'React Specialist',
                 1000,
                 'Next.js Expert',
+                1000,
+                'Web Developer',
                 1000,
               ]}
               wrapper="span"
