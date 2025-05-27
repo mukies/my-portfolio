@@ -40,6 +40,19 @@ export default function Contact() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   
+  // FIX: Generate particle positions once on client side to avoid hydration mismatch
+  const [particlePositions, setParticlePositions] = useState<Array<{left: number, top: number, duration: number, delay: number}>>([]);
+  
+  useEffect(() => {
+    // Generate positions only on client side after hydration
+    const positions = Array.from({ length: 6 }, () => ({
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      duration: 3 + Math.random() * 2,
+      delay: Math.random() * 2
+    }));
+    setParticlePositions(positions);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -107,7 +120,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative py-20 md:py-32 overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100 dark:from-gray-900 dark:via-blue-900/10 dark:to-gray-800">
+    <section id="contact" className="relative py-20 md:py-32 overflow-hidden bg-gradient-to-b  from-cyan-900 dark:via-blue-900/10 dark:to-gray-800">
       {/* Animated background elements */}
       <motion.div
         style={{ y: backgroundY }}
@@ -118,23 +131,23 @@ export default function Contact() {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-indigo-400/10 rounded-full blur-3xl"></div>
       </motion.div>
       
-      {/* Floating particles */}
-      {[...Array(6)].map((_, i) => (
+      {/* Floating particles - FIXED to avoid hydration mismatch */}
+      {particlePositions.map((particle, i) => (
         <motion.div
           key={i}
           className="absolute w-2 h-2 bg-blue-400/30 rounded-full"
           style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
+            left: `${particle.left}%`,
+            top: `${particle.top}%`,
           }}
           animate={{
             y: [-20, 20, -20],
             opacity: [0.3, 0.8, 0.3],
           }}
           transition={{
-            duration: 3 + Math.random() * 2,
+            duration: particle.duration,
             repeat: Infinity,
-            delay: Math.random() * 2,
+            delay: particle.delay,
           }}
         />
       ))}

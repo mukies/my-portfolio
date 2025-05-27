@@ -27,17 +27,7 @@ export default function CustomCursor() {
       setIsActive(false);
     };
 
-    const handleMouseOver = (e: MouseEvent) => {
-      // Check if the target is clickable
-      const target = e.target as HTMLElement;
-      const clickableElements = ['A', 'BUTTON', 'INPUT', 'TEXTAREA', 'SELECT', 'LABEL'];
-      const isClickable = 
-        clickableElements.includes(target.tagName) || 
-        target.classList.contains('cursor-pointer') ||
-        window.getComputedStyle(target).cursor === 'pointer';
-      
-    //   setIsPointer(isClickable);
-    };
+  
 
     const handleMouseLeave = () => {
       setIsVisible(false);
@@ -49,7 +39,7 @@ export default function CustomCursor() {
 
     // Add event listeners
     window.addEventListener('mousemove', updateMousePosition);
-    window.addEventListener('mouseover', handleMouseOver);
+    // window.addEventListener('mouseover', handleMouseOver);
     window.addEventListener('mousedown', handleMouseDown);
     window.addEventListener('mouseup', handleMouseUp);
     document.addEventListener('mouseleave', handleMouseLeave);
@@ -59,7 +49,7 @@ export default function CustomCursor() {
     return () => {
       clearTimeout(timer);
       window.removeEventListener('mousemove', updateMousePosition);
-      window.removeEventListener('mouseover', handleMouseOver);
+      // window.removeEventListener('mouseover', handleMouseOver);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('mouseleave', handleMouseLeave);

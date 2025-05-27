@@ -37,7 +37,7 @@ export default function Hero() {
 
 
   return (
-    <section id="home" ref={ref} className="relative w-full h-screen overflow-hidden flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-blue-950 dark:to-indigo-950">
+    <section id="home" ref={ref} className="relative w-full h-screen overflow-hidden flex items-center justify-center bg-gradient-to-br  from-slate-900 via-blue-950 to-indigo-950">
       
       {/* Enhanced Background with Multiple Parallax Layers */}
       <motion.div 

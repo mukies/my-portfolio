@@ -144,13 +144,27 @@ export default function Skills() {
     }
   };
 
+  // FIX: Generate particle positions once on client side to avoid hydration mismatch
+  const [particlePositions, setParticlePositions] = useState<Array<{left: number, top: number, duration: number, delay: number}>>([]);
+  
+  useEffect(() => {
+    // Generate positions only on client side after hydration
+    const positions = Array.from({ length: 6 }, () => ({
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      duration: 3 + Math.random() * 2,
+      delay: Math.random() * 2
+    }));
+    setParticlePositions(positions);
+  }, []);
+
   const currentCategory = skills.find(skill => skill.category === activeCategory);
 
   return (
     <section 
     id='skills'
       ref={parallaxRef}
-      className="relative py-32 overflow-hidden bg-gradient-to-br from-slate-900 via-gray-900 to-black"
+      className="relative py-32 overflow-hidden bg-gradient-to-b from-indigo-950 via-gray-900 to-cyan-900"
     >
       {/* Animated Background */}
       <motion.div 
@@ -159,13 +173,13 @@ export default function Skills() {
       >
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-cyan-600/10" />
         <div className="absolute inset-0">
-          {Array.from({ length: 50 }).map((_, i) => (
+          {particlePositions.map((particle, i) => (
             <motion.div
               key={i}
               className="absolute w-1 h-1 bg-white rounded-full"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
+                left: `${particle.left}%`,
+                top: `${particle.top}%`,
               }}
               animate={{
                 opacity: [0.2, 0.8, 0.2],

@@ -14,15 +14,18 @@
   --background-end-rgb: 20, 20, 35;
   --accent-rgb: 100, 110, 255;
 }
+html{
+  scroll-behavior: smooth;
+}
 
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
+      rgb(20, 20, 35)
     )
-    rgb(var(--background-start-rgb));
+    rgb(10, 10, 20);
   overflow-x: hidden;
   background-repeat: no-repeat;
   transition-behavior: smooth;
@@ -46,6 +49,17 @@ body {
 .float {
   animation: float 6s ease-in-out infinite;
 }
+
+
+.bg-clip-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.text-transparent {
+  color: transparent;
+}
+
 
 /* Custom Cursor */
 .custom-cursor {

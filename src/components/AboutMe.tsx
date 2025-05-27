@@ -51,12 +51,23 @@ export default function AboutMe() {
     { number: "50+", label: "Happy Clients", icon: "😊" },
     { number: "24/7", label: "Support Available", icon: "⏰" }
   ];
-
+ const [particlePositions, setParticlePositions] = useState<Array<{left: number, top: number, duration: number, delay: number}>>([]);
+  
+  useEffect(() => {
+    // Generate positions only on client side after hydration
+    const positions = Array.from({ length: 6 }, () => ({
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      duration: 3 + Math.random() * 2,
+      delay: Math.random() * 2
+    }));
+    setParticlePositions(positions);
+  }, []);
   return (
     <section 
     id='about'
       ref={parallaxRef}
-      className="relative py-32 overflow-hidden bg-gradient-to-br from-slate-900 via-gray-900 to-black"
+      className="relative py-32 overflow-hidden bg-gradient-to-b from-indigo-950 via-blue-950 to-slate-900 "
     >
       {/* Animated Background */}
       <motion.div 
@@ -65,13 +76,13 @@ export default function AboutMe() {
       >
         <div className="absolute inset-0 bg-gradient-to-r from-emerald-600/10 via-blue-600/10 to-purple-600/10" />
         <div className="absolute inset-0">
-          {Array.from({ length: 30 }).map((_, i) => (
+          {particlePositions.map((particle, i) => (
             <motion.div
               key={i}
               className="absolute w-1 h-1 bg-white rounded-full"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
+                left: `${particle.left}%`,
+                top: `${particle.top}%`,
               }}
               animate={{
                 opacity: [0.1, 0.6, 0.1],
@@ -204,50 +215,22 @@ export default function AboutMe() {
 
             <motion.div variants={itemVariants} className="space-y-6 mb-10">
               <p className="text-xl text-gray-300 leading-relaxed">
-                Hello! I'm <span className="text-blue-400 font-semibold">John Doe</span>, a passionate full-stack developer specializing in creating exceptional digital experiences. With over 5 years of experience, I transform complex problems into elegant, scalable solutions.
+                Hello! I'm <span className="text-blue-400 font-semibold">Mukesh Bhattarai</span>, a passionate Frontend Developer with 2 years+ of experience building responsive, user-friendly web applications using React.js, Next.js, and Tailwind CSS.
               </p>
 
               <p className="text-lg text-gray-400 leading-relaxed">
-                My journey began with a fascination for turning ideas into reality through code. I've evolved from building simple websites to architecting enterprise-level applications, always staying at the forefront of technology trends and best practices.
+               I specialize in turning UI designs into clean, performant code and have worked on several live e-commerce and CMS platforms with integrated payment systems like Stripe, eSewa, and Khalti. My focus is always on delivering smooth user experiences, optimized performance, and scalable frontends.
               </p>
 
               <p className="text-lg text-gray-400 leading-relaxed">
-                Beyond coding, I'm an advocate for clean architecture, user-centric design, and continuous learning. When I'm not crafting digital solutions, you'll find me exploring mountain trails, diving into sci-fi literature, or experimenting with culinary arts.
+                Whether it's crafting pixel-perfect components, integrating APIs, or collaborating with teams to bring ideas to life, I enjoy the process of solving real-world problems through code.
+
+
               </p>
             </motion.div>
 
             {/* Info Grid */}
-            <motion.div
-              variants={itemVariants}
-              className="grid grid-cols-2 gap-6 mb-10"
-            >
-              {[
-                { label: "Location", value: "San Francisco, CA", icon: "📍" },
-                { label: "Email", value: "hello@johndoe.dev", icon: "✉️" },
-                { label: "Education", value: "B.S. Computer Science", icon: "🎓" },
-                { label: "Focus", value: "Full-Stack Development", icon: "💻" }
-              ].map((item, index) => (
-                <motion.div
-                  key={item.label}
-                  className="group p-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300"
-                  whileHover={{ scale: 1.02, y: -2 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                  transition={{ delay: 0.8 + index * 0.1 }}
-                >
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="text-xl">{item.icon}</span>
-                    <h3 className="font-semibold text-white group-hover:text-blue-300 transition-colors">
-                      {item.label}
-                    </h3>
-                  </div>
-                  <p className="text-gray-400 group-hover:text-gray-300 transition-colors">
-                    {item.value}
-                  </p>
-                </motion.div>
-              ))}
-            </motion.div>
-
+          
             {/* CTA Buttons */}
             <motion.div 
               variants={itemVariants}
@@ -272,7 +255,7 @@ export default function AboutMe() {
               </motion.a>
 
               <motion.a
-                href="/resume.pdf"
+                href="/cv/mukesh-cv-frontend.pdf"
                 className="group px-8 py-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold hover:bg-white/20 hover:border-white/30 transition-all duration-300"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
@@ -288,7 +271,7 @@ export default function AboutMe() {
 
         {/* Stats Section */}
         <motion.div
-          className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-6"
+          className="mt-24 hidden grid-cols-2 md:grid-cols-4 gap-6"
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           transition={{ duration: 1, delay: 1.2 }}

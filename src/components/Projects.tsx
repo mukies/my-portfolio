@@ -56,6 +56,8 @@ export default function Projects() {
   const mouseY = useMotionValue(0);
   const mouseXSpring = useSpring(mouseX, { stiffness: 300, damping: 30 });
   const mouseYSpring = useSpring(mouseY, { stiffness: 300, damping: 30 });
+   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
+
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -107,7 +109,7 @@ export default function Projects() {
   return (
     <section 
       id="projects" 
-      className="relative py-20 md:py-32 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50 dark:from-slate-900 dark:via-blue-950/30 dark:to-indigo-950 overflow-hidden" 
+      className="relative py-20 md:py-32 bg-gradient-to-b from-slate-900 via-blue-950 to-indigo-950 overflow-hidden" 
       ref={containerRef}
     >
       {/* Refined background elements */}
@@ -148,7 +150,7 @@ export default function Projects() {
           }}
         >
           <motion.div
-            className="inline-flex items-center gap-3 px-6 py-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl text-blue-600 dark:text-blue-400 rounded-full text-sm font-semibold mb-8 border border-blue-200/50 dark:border-blue-800/50 shadow-lg"
+            className="inline-flex items-center gap-3 px-6 py-3 bg-gray-800/80 backdrop-blur-xl text-blue-600 dark:text-blue-400 rounded-full text-sm font-semibold mb-8 border border-blue-200/50 dark:border-blue-800/50 shadow-lg"
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.9 }}
             transition={{ duration: 0.8 }}
@@ -159,27 +161,30 @@ export default function Projects() {
             <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
           </motion.div>
 
-          <motion.h2
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 dark:from-white dark:via-blue-300 dark:to-purple-300 mb-6 tracking-tight"
-            initial={{ opacity: 0, y: 40 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-            transition={{ duration: 1, delay: 0.2 }}
+      <motion.div 
+          className="text-center max-w-4xl mx-auto mb-8"
+          style={{ y: textY }}
+        >
+          <motion.div
+            className="inline-block"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
+            transition={{ duration: 0.8, type: "spring" }}
           >
-            Creative{' '}
-            <motion.span 
-              className="relative inline-block"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.3 }}
-            >
-              Projects
-              <motion.div
-                className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full opacity-80"
-                initial={{ scaleX: 0 }}
-                animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-                transition={{ duration: 1, delay: 0.8 }}
-              />
-            </motion.span>
-          </motion.h2>
+            <h2 className="text-5xl md:text-7xl font-bold mb-5 bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent">
+              Creative Projects
+            </h2>
+          </motion.div>
+          
+          <motion.div
+            className="w-32 h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 mx-auto mb-10 rounded-full"
+            initial={{ opacity: 0, scaleX: 0 }}
+            animate={isInView ? { opacity: 1, scaleX: 1 } : { opacity: 0, scaleX: 0 }}
+            transition={{ duration: 1, delay: 0.3 }}
+          />
+          
+        
+        </motion.div>
           
           <motion.p
             className="text-lg lg:text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto"

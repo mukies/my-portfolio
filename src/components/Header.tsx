@@ -215,15 +215,7 @@ export default function Header() {
               PORTFOLIO
             </span>
             
-            {/* Animated underline */}
-            {/* <motion.div
-              className="absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-600 to-violet-600 dark:from-blue-400 dark:to-violet-400"
-              initial={{ width: 0 }}
-              whileHover={{
-                width: "100%",
-                transition: { duration: 0.3 }
-              }}
-            /> */}
+          
           </motion.a>
         </motion.div>
 
@@ -277,7 +269,7 @@ export default function Header() {
               transition: { duration: 0.3 }
             }}
           >
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
           </motion.div>
         </nav>
 
@@ -300,7 +292,7 @@ export default function Header() {
               transition: { duration: 0.3 }
             }}
           >
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
           </motion.div>
           
           <motion.button
