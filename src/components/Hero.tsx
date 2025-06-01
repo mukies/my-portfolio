@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
+import Image from 'next/image';
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);  
@@ -34,10 +35,16 @@ export default function Hero() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [mouseX, mouseY]);
 
+  const socialMedia = [
+    { id: "linkedin", name: "LinkedIn", url:"https://www.linkedin.com/in/mukesh-bhattarai-720238157", className:"object-left ", image: "/images/linkedin.png" },
+    { id: "github", name: "GitHub", image: "/images/github.png",url:"https://github.com/mukies", },
+    { id: "x", name: "X", image: "/images/x.png",url:"https://x.com/mukes_dev", },
+  ];
+
 
 
   return (
-    <section id="home" ref={ref} className="relative w-full h-screen overflow-hidden flex items-center justify-center bg-gradient-to-br  from-slate-900 via-blue-950 to-indigo-950">
+    <section id="home" ref={ref} className="relative w-full h-screen overflow-hidden flex  items-center justify-center bg-gradient-to-br  from-slate-900 via-blue-950 to-indigo-950">
       
       {/* Enhanced Background with Multiple Parallax Layers */}
       <motion.div 
@@ -86,7 +93,7 @@ export default function Hero() {
           </motion.div>
 
           <motion.h2
-            className="text-lg md:text-xl font-light mb-4 text-gray-600 dark:text-gray-400 tracking-wide"
+            className="text-lg md:text-xl font-light mb-4 text-gray-300 tracking-wide"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
@@ -130,7 +137,7 @@ export default function Hero() {
           </motion.div>
           
           <motion.p
-            className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
@@ -175,18 +182,25 @@ export default function Hero() {
               y: useTransform(mouseY, y => y * 0.1)
             }}
           >
-            {['GitHub', 'LinkedIn', 'Twitter'].map((social, index) => (
+            {socialMedia.map((social, index) => (
               <motion.a
-                key={social}
-                href={`#${social.toLowerCase()}`}
-                className="w-12 h-12 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-500/50 transition-all duration-300 shadow-lg"
+                key={social.id}
+                target="_blank"
+                href={social.url}
+                className="w-12 h-12 relative overflow-hidden rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-500/50 transition-all duration-300 shadow-lg"
                 whileHover={{ scale: 1.1, y: -3 }}
                 whileTap={{ scale: 0.95 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.9 + index * 0.1 }}
               >
-                <span className="text-lg font-bold">{social[0]}</span>
+                {/* <span className="text-lg font-bold">{social[0]}</span> */}
+                <Image
+                  src={social.image}
+                  alt={social.name}
+                 fill
+                  className={`object-cover h-full w-full ${social?.className ?? ''}`}
+                />
               </motion.a>
             ))}
           </motion.div>

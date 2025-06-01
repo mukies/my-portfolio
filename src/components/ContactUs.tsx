@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, useInView, useScroll, useTransform, useSpring } from 'framer-motion';
+import { sendContactMessage } from '@/services/contactApi';
 
 export default function Contact() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -59,20 +60,28 @@ export default function Contact() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      formRef.current?.reset();
+
+    try {
+      const res = await sendContactMessage(formData)
       setFormData({ name: '', email: '', subject: '', message: '' });
-      
+      setIsSubmitted(true);
+      console.log('res',res)
+    } catch (error) {
+      alert('error')
+    }finally{
+      setIsSubmitting(false);
       setTimeout(() => {
-        setIsSubmitted(false);
+      setIsSubmitted(false);
       }, 5000);
-    }, 1500);
+    }
+    
+    // setTimeout(() => {
+    //   formRef.current?.reset();
+      
+    // }, 1500);
   };
   
   const containerVariants = {
