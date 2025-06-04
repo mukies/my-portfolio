@@ -456,7 +456,7 @@ export default function Skills() {
 
         {/* others  */}
         <motion.div
-          className="text-center max-w-4xl mx-auto "
+          className="text-center max-w-4xl mx-auto"
           style={{ y: textY }}
         >
           <motion.div

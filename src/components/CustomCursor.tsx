@@ -170,9 +170,9 @@ export default function CustomCursor(): JSX.Element {
         }}
         transition={{
           type: "spring",
-          mass: 0.1,
-          stiffness: 1000,
-          damping: 28,
+          mass: 0.05,
+          stiffness: 2000,
+          damping: 30,
           opacity: { duration: 0.2 }
         }}
       >
@@ -200,9 +200,9 @@ export default function CustomCursor(): JSX.Element {
         }}
         transition={{
           type: "spring",
-          mass: 0.8,
-          stiffness: 150,
-          damping: 20,
+          mass: 0.3,
+          stiffness: 2000,
+          damping: 30,
           opacity: { duration: 0.3 }
         }}
       >
@@ -225,9 +225,9 @@ export default function CustomCursor(): JSX.Element {
         }}
         transition={{
           type: "spring",
-          mass: 1.5,
-          stiffness: 80,
-          damping: 25,
+          mass: 0.8,
+          stiffness: 2000,
+          damping: 30,
           opacity: { duration: 0.5 }
         }}
       >

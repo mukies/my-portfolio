@@ -168,38 +168,7 @@ export default function Header() {
     { name: 'contact', href: '#contact' }
   ];
 
-  // Sliding Tab Component
-  const SlidingTab = ({ 
-    children, 
-    href,
-    index
-  }: { 
-    children: string; 
-    href: string;
-    index: number;
-  }) => {
-    const ref = useRef<null | HTMLLIElement>(null);
-    
-    return (
-      <li
-        ref={ref}
-        onMouseEnter={() => {
-          if (!ref?.current) return;
-          const { width } = ref.current.getBoundingClientRect();
-          setPosition({
-            left: ref.current.offsetLeft,
-            width,
-            opacity: 1,
-          });
-        }}
-        className="relative z-10 block cursor-pointer px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 mix-blend-difference transition-colors duration-300 md:px-6 md:py-2.5 md:text-base"
-      >
-        <a href={href} className="block w-full h-full">
-          {children}
-        </a>
-      </li>
-    );
-  };
+
 
   // Cursor Component
   const Cursor = ({ position }: { position: Position }) => {
@@ -239,36 +208,38 @@ export default function Header() {
     >
       <div className="container-custom flex justify-between items-center">
         {/* Logo */}
-        <motion.div
-          className="text-2xl font-bold relative"
-          variants={logoVariants}
-          initial="initial"
-          animate="animate"
-          whileHover="hover"
-          whileTap="tap"
-        >
-          <motion.a 
-            href="#" 
-            className="relative inline-block"
-          >
-            <motion.span 
-              className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-violet-600 dark:from-blue-400 dark:via-purple-400 dark:to-violet-400"
-              animate={{
-                backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-            >
-              MY
-            </motion.span>
-            <span className="font-light text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-violet-600 dark:from-blue-400 dark:via-purple-400 dark:to-violet-400">
-              PORTFOLIO
-            </span>
-          </motion.a>
-        </motion.div>
+       <motion.div           
+  className="text-center relative"           
+  variants={logoVariants}           
+  initial="initial"           
+  animate="animate"           
+  whileHover="hover"           
+  whileTap="tap"         
+>           
+  <motion.a              
+    href="#"              
+    className="relative inline-block"           
+  >             
+    <div className="flex flex-col items-center">
+      <motion.span                
+        className="text-3xl font-bold text-transparent uppercase bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-violet-600 dark:from-blue-400 dark:via-purple-400 dark:to-violet-400"               
+        animate={{                 
+          backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],               
+        }}               
+        transition={{                 
+          duration: 3,                 
+          repeat: Infinity,                 
+          ease: "linear"               
+        }}             
+      >                
+        Mukesh             
+      </motion.span>             
+      <span className="text-base tracking-[5px] font-light text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-violet-600 dark:from-blue-400 dark:via-purple-400 dark:to-violet-400 -mt-1">              
+        portfolio             
+      </span>
+    </div>           
+  </motion.a>         
+</motion.div>
 
         {/* Desktop Navigation - Sliding Tabs */}
         <nav className="hidden md:flex items-center space-x-6">
@@ -293,15 +264,7 @@ export default function Header() {
           >
             <SlideTabs navLinks={navItems}/>
 
-            {/* {navItems.map((item, index) => (
-              <SlidingTab 
-                key={item} 
-                href={`#${item.toLowerCase()}`}
-                index={index}
-              >
-                {item}
-              </SlidingTab>
-            ))} */}
+          
             <Cursor position={position} />
           </motion.ul>
           
@@ -349,7 +312,7 @@ export default function Header() {
           
           <motion.button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="focus:outline-none p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            className={`focus:outline-none p-2 rounded-lg hover:bg-gray-800 transition-colors ${scrolled ? 'text-white':'text-gray-300'}`}
             aria-label="Toggle menu"
             variants={hamburgerVariants}
             initial="initial"

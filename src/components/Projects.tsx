@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import {
   motion,
   useInView,
@@ -67,39 +67,55 @@ export default function Projects() {
   const headerY = useTransform(scrollYProgress, [0, 1], ["0%", "-15%"]);
   const floatingY = useTransform(scrollYProgress, [0, 1], ["0%", "-25%"]);
 
-  // Mouse parallax
+  // Mouse parallax with reduced intensity
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const mouseXSpring = useSpring(mouseX, { stiffness: 300, damping: 30 });
-  const mouseYSpring = useSpring(mouseY, { stiffness: 300, damping: 30 });
+  const mouseXSpring = useSpring(mouseX, { stiffness: 200, damping: 25 });
+  const mouseYSpring = useSpring(mouseY, { stiffness: 200, damping: 25 });
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
 
+  // Optimized mouse move handler with throttling
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
+      const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
+      mouseX.set(x * 20); // Reduced from 30 to 20
+      mouseY.set(y * 20);
+      setMousePosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    }
+  }, [mouseX, mouseY]);
+
+  // Throttled mouse move handler
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
-        const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
-        mouseX.set(x * 30); // Reduced intensity
-        mouseY.set(y * 30);
-        setMousePosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    let ticking = false;
+    let lastMouseEvent: MouseEvent;
+
+    const throttledMouseMove = (e: MouseEvent) => {
+      lastMouseEvent = e;
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleMouseMove(lastMouseEvent);
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
     const container = containerRef.current;
     if (container) {
-      container.addEventListener("mousemove", handleMouseMove);
-      return () => container.removeEventListener("mousemove", handleMouseMove);
+      container.addEventListener("mousemove", throttledMouseMove, { passive: true });
+      return () => container.removeEventListener("mousemove", throttledMouseMove);
     }
-  }, [mouseX, mouseY]);
+  }, [handleMouseMove]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.3,
-        delayChildren: 0.4,
+        staggerChildren: 0.2, // Reduced from 0.3
+        delayChildren: 0.2, // Reduced from 0.4
       },
     },
   };
@@ -107,15 +123,15 @@ export default function Projects() {
   const itemVariants = {
     hidden: {
       opacity: 0,
-      y: 80,
-      scale: 0.9,
+      y: 60, // Reduced from 80
+      scale: 0.95, // Reduced from 0.9
     },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
       transition: {
-        duration: 0.8,
+        duration: 0.6, // Reduced from 0.8
         ease: [0.25, 0.46, 0.45, 0.94],
       },
     },
@@ -126,45 +142,49 @@ export default function Projects() {
       id="projects"
       className="relative py-20 md:py-32 bg-gradient-to-b from-slate-900 via-blue-950 to-indigo-950 overflow-hidden"
       ref={containerRef}
+      style={{ willChange: 'auto' }} // Optimize for performance
     >
-      {/* Refined background elements */}
+      {/* Simplified background elements */}
       <motion.div
-        className="absolute inset-0 opacity-40"
-        style={{ y: backgroundY }}
+        className="absolute inset-0 opacity-30" // Reduced from 40
+        style={{ y: backgroundY, willChange: 'transform' }}
       >
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/15 to-purple-400/15 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-gradient-to-br from-cyan-400/15 to-teal-400/15 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-br from-indigo-400/10 to-pink-400/10 rounded-full blur-2xl"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-gradient-to-br from-cyan-400/10 to-teal-400/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-br from-indigo-400/8 to-pink-400/8 rounded-full blur-2xl"></div>
       </motion.div>
 
-      {/* Subtle mouse-following effect */}
+      {/* Optimized mouse-following effect */}
       <div
-        className="absolute inset-0 opacity-20 pointer-events-none transition-opacity duration-500"
+        className="absolute inset-0 opacity-15 pointer-events-none transition-opacity duration-700" // Increased duration for smoother transition
         style={{
-          background: `radial-gradient(400px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(59, 130, 246, 0.08), transparent 70%)`,
+          background: `radial-gradient(300px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(59, 130, 246, 0.06), transparent 70%)`,
+          willChange: 'background-position'
         }}
       />
 
-      {/* Floating elements with subtle parallax */}
+      {/* Simplified floating elements */}
       <motion.div
         className="absolute inset-0 pointer-events-none"
         style={{
           y: floatingY,
-          x: useTransform(mouseXSpring, [-30, 30], [-10, 10]),
+          x: useTransform(mouseXSpring, [-20, 20], [-5, 5]), // Reduced range
+          willChange: 'transform'
         }}
       >
-        <div className="absolute top-20 right-1/4 w-3 h-3 bg-blue-500/30 rounded-full animate-pulse"></div>
-        <div className="absolute bottom-1/4 left-1/5 w-4 h-4 bg-purple-500/20 rotate-45"></div>
-        <div className="absolute top-1/3 left-3/4 w-6 h-1 bg-cyan-500/40 rounded-full"></div>
+        <div className="absolute top-20 right-1/4 w-2 h-2 bg-blue-500/20 rounded-full animate-pulse"></div>
+        <div className="absolute bottom-1/4 left-1/5 w-3 h-3 bg-purple-500/15 rotate-45"></div>
+        <div className="absolute top-1/3 left-3/4 w-4 h-1 bg-cyan-500/30 rounded-full"></div>
       </motion.div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10" ref={ref}>
-        {/* Header with refined parallax */}
+        {/* Optimized header */}
         <motion.div
           className="text-center max-w-4xl mx-auto mb-20"
           style={{
             y: headerY,
-            x: useTransform(mouseXSpring, [-30, 30], [-5, 5]),
+            x: useTransform(mouseXSpring, [-20, 20], [-3, 3]), // Reduced range
+            willChange: 'transform'
           }}
         >
           <motion.div
@@ -175,8 +195,8 @@ export default function Projects() {
                 ? { opacity: 1, y: 0, scale: 1 }
                 : { opacity: 0, y: 20, scale: 0.9 }
             }
-            transition={{ duration: 0.8 }}
-            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.6 }} // Reduced from 0.8
+            whileHover={{ scale: 1.03 }} // Reduced from 1.05
           >
             <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
             Featured Portfolio
@@ -185,7 +205,7 @@ export default function Projects() {
 
           <motion.div
             className="text-center max-w-4xl mx-auto mb-8"
-            style={{ y: textY }}
+            style={{ y: textY, willChange: 'transform' }}
           >
             <motion.div
               className="inline-block"
@@ -193,7 +213,7 @@ export default function Projects() {
               animate={
                 isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }
               }
-              transition={{ duration: 0.8, type: "spring" }}
+              transition={{ duration: 0.6, type: "spring" }} // Reduced duration
             >
               <h2 className="text-5xl md:text-7xl font-bold mb-5 bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent">
                 Creative Projects
@@ -206,7 +226,7 @@ export default function Projects() {
               animate={
                 isInView ? { opacity: 1, scaleX: 1 } : { opacity: 0, scaleX: 0 }
               }
-              transition={{ duration: 1, delay: 0.3 }}
+              transition={{ duration: 0.8, delay: 0.2 }} // Reduced delay
             />
           </motion.div>
 
@@ -214,14 +234,14 @@ export default function Projects() {
             className="text-lg lg:text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 1, delay: 0.4 }}
+            transition={{ duration: 0.8, delay: 0.3 }} // Reduced delay
           >
             Discover innovative solutions and creative implementations that push
             the boundaries of modern web development.
           </motion.p>
         </motion.div>
 
-        {/* Fixed Projects Grid */}
+        {/* Optimized Projects Grid */}
         <motion.div
           className="space-y-24 md:space-y-32"
           variants={containerVariants}
@@ -234,6 +254,7 @@ export default function Projects() {
               className="relative"
               variants={itemVariants}
               id={`project-${project.id}`}
+              style={{ willChange: 'transform, opacity' }}
             >
               {/* Project Container with proper spacing */}
               <div
@@ -248,11 +269,11 @@ export default function Projects() {
                     relative group perspective-1000 rounded-3xl
                     ${index % 2 === 1 ? "lg:col-start-2" : ""}
                   `}
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  whileHover={{ scale: 1.01 }} // Reduced from 1.02
+                  transition={{ duration: 0.4, ease: "easeOut" }} // Reduced duration
                 >
-                  {/* Glow effect */}
-                  <div className="absolute -inset-4 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-cyan-600/20 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                  {/* Simplified glow effect */}
+                  <div className="absolute -inset-4 bg-gradient-to-r from-blue-600/15 via-purple-600/15 to-cyan-600/15 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                   {/* Main image card */}
                   <div className="relative bg-white/90 dark:bg-gray-900/90 backdrop-blur-2xl  rounded-3xl shadow-2xl border border-gray-700/30 ">
@@ -261,7 +282,8 @@ export default function Projects() {
                       <motion.img
                         src={project.image}
                         alt={project.title}
-                        className="w-full h-full object-cover transition-transform duration-700 rounded-3xl  group-hover:scale-110"
+                        className="w-full h-full object-cover transition-transform duration-500 rounded-3xl  group-hover:scale-105" // Reduced scale and duration
+                        loading="lazy" // Add lazy loading
                       />
 
                       {/* Gradient overlay */}
@@ -277,8 +299,8 @@ export default function Projects() {
                             className="px-3 py-1 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-950/50 text-blue-700 dark:text-blue-300 rounded-lg text-xs font-medium border border-blue-200/50 dark:border-blue-800/50"
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: tagIndex * 0.1 + 0.4 }}
-                            whileHover={{ scale: 1.05 }}
+                            transition={{ delay: tagIndex * 0.05 + 0.2 }} // Reduced delays
+                            whileHover={{ scale: 1.03 }} // Reduced scale
                           >
                             {tag}
                           </motion.span>
@@ -297,12 +319,12 @@ export default function Projects() {
                       initial={{ scale: 0, rotate: -180 }}
                       animate={{ scale: 1, rotate: 0 }}
                       transition={{
-                        delay: index * 0.2 + 0.6,
-                        duration: 0.8,
+                        delay: index * 0.1 + 0.3, // Reduced delays
+                        duration: 0.6, // Reduced duration
                         type: "spring",
-                        bounce: 0.4,
+                        bounce: 0.3, // Reduced bounce
                       }}
-                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      whileHover={{ scale: 1.05, rotate: 3 }} // Reduced effects
                     >
                       {String(index + 1).padStart(2, "0")}
                     </motion.div>
@@ -328,8 +350,8 @@ export default function Projects() {
                   <div className="space-y-4">
                     <motion.h3
                       className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white leading-tight"
-                      whileHover={{ x: 5 }}
-                      transition={{ duration: 0.3 }}
+                      whileHover={{ x: 3 }} // Reduced from 5
+                      transition={{ duration: 0.2 }} // Reduced duration
                     >
                       {project.title}
                     </motion.h3>
@@ -351,9 +373,9 @@ export default function Projects() {
                           className="flex items-center gap-2 p-3 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-200/50 dark:border-gray-700/50"
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: tagIndex * 0.05 + 0.5 }}
+                          transition={{ delay: tagIndex * 0.03 + 0.3 }} // Reduced delays
                           whileHover={{
-                            y: -2,
+                            y: -1, // Reduced from -2
                             backgroundColor: "rgba(59, 130, 246, 0.05)",
                           }}
                         >
@@ -373,8 +395,8 @@ export default function Projects() {
                       className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg"
                       target="_blank"
                       rel="noopener noreferrer"
-                      whileHover={{ y: -2, scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      whileHover={{ y: -1, scale: 1.01 }} // Reduced effects
+                      whileTap={{ scale: 0.99 }} // Reduced effect
                     >
                       <span>Explore Live</span>
                       <motion.svg
@@ -382,7 +404,7 @@ export default function Projects() {
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
-                        whileHover={{ x: 2 }}
+                        whileHover={{ x: 1 }} // Reduced from 2
                       >
                         <path
                           strokeLinecap="round"
@@ -398,8 +420,8 @@ export default function Projects() {
                       className="inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-semibold hover:border-gray-400 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-300"
                       target="_blank"
                       rel="noopener noreferrer"
-                      whileHover={{ y: -2, scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      whileHover={{ y: -1, scale: 1.01 }} // Reduced effects
+                      whileTap={{ scale: 0.99 }} // Reduced effect
                     >
                       <svg
                         className="w-4 h-4"
@@ -423,17 +445,17 @@ export default function Projects() {
           ))}
         </motion.div>
 
-        {/* CTA Section */}
+        {/* Optimized CTA Section */}
         <motion.div
           className="text-center mt-32 pt-16 border-t border-gray-200/50 dark:border-gray-800/50"
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ duration: 1, delay: 1.2 }}
+          initial={{ opacity: 0, y: 30 }} // Reduced from 50
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.8, delay: 0.8 }} // Reduced delay
         >
           <motion.div
             className="max-w-3xl mx-auto space-y-6"
-            whileHover={{ scale: 1.01 }}
-            transition={{ duration: 0.3 }}
+            whileHover={{ scale: 1.005 }} // Reduced from 1.01
+            transition={{ duration: 0.2 }} // Reduced duration
           >
             <h3 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
               Ready to bring your vision to life?
@@ -446,8 +468,8 @@ export default function Projects() {
             <motion.a
               href="#contact"
               className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-gray-900 to-blue-900 dark:from-white dark:to-blue-100 text-white dark:text-gray-900 rounded-xl font-semibold hover:from-gray-800 hover:to-blue-800 dark:hover:from-gray-100 dark:hover:to-blue-200 transition-all duration-300 shadow-xl"
-              whileHover={{ y: -3, scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ y: -2, scale: 1.03 }} // Reduced effects
+              whileTap={{ scale: 0.97 }} // Reduced effect
             >
               <span>Start Your Project</span>
               <motion.svg
@@ -456,8 +478,8 @@ export default function Projects() {
                 stroke="currentColor"
                 viewBox="0 0 24 24"
                 initial={{ x: 0 }}
-                whileHover={{ x: 3 }}
-                transition={{ duration: 0.2 }}
+                whileHover={{ x: 2 }} // Reduced from 3
+                transition={{ duration: 0.15 }} // Reduced duration
               >
                 <path
                   strokeLinecap="round"

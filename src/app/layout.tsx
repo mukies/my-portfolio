@@ -38,7 +38,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} transition-colors duration-300`}>
         <ThemeProvider>
-          <CustomCursor />
+          {/* <CustomCursor /> */}
           <Header />
           <main>{children}</main>
           <Footer />
