@@ -1,31 +1,66 @@
-import { Inter } from 'next/font/google';
-import './globals.css';
+import { Inter } from "next/font/google";
+import "./globals.css";
 
-import { ThemeProvider } from '@/context/ThemeContext';
-import CustomCursor from '@/components/CustomCursor';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { ThemeProvider } from "@/context/ThemeContext";
+import CustomCursor from "@/components/CustomCursor";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: 'My Portfolio | Professional Developer',
-  description: 'A showcase of my skills, projects, and experiences as a professional developer.',
+  title: "Mukesh Bhattarai | Frontend Developer & MERN Stack Expert",
+  description:
+    "Mukesh Bhattarai's portfolio — showcasing skills in React, Next.js, and MERN stack with real-world projects and frontend expertise.",
+  keywords: [
+    "Mukesh Bhattarai",
+    "Madhusudhan Bhattarai",
+    "Frontend Developer",
+    "MERN Stack Developer",
+    "React Developer",
+    "Next.js Portfolio",
+    "JavaScript Developer",
+    "Web Developer Nepal",
+    "Fullstack Developer",
+    "MongoDB",
+    "Node.js",
+    "Express.js",
+    "Frontend Portfolio",
+    "Hire Developer Nepal",
+  ],
+  metadataBase: new URL("https://mukeshbhattarai.com"), 
+  alternates: {
+    canonical: "https://mukeshbhattarai.com",
+  },
   openGraph: {
-    title: 'My Portfolio | Professional Developer',
-    description: 'A showcase of my skills, projects, and experiences as a professional developer.',
-    url: 'https://my-portfolio.com',
-    siteName: 'My Portfolio',
+    title: "Mukesh Bhattarai | Frontend Developer & MERN Stack Expert",
+    description:
+      "Discover the professional portfolio of Mukesh Bhattarai — showcasing frontend development skills, MERN stack projects, and career achievements.",
+    url: "https://mukeshbhattarai.com",
+    siteName: "Mukesh Bhattarai Portfolio",
     images: [
       {
-        url: '/og-image.jpg',
+        url: "/images/profile.png",
         width: 1200,
         height: 630,
-        alt: 'My Portfolio',
+        alt: "Mukesh Bhattarai Portfolio Preview",
       },
     ],
-    locale: 'en_US',
-    type: 'website',
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mukesh Bhattarai | Frontend Developer & MERN Stack Expert",
+    description:
+      "Explore the portfolio of Mukesh Bhattarai, showcasing expertise in React, Next.js, Node.js, and modern frontend technologies.",
+    images: ["/images/profile.png"],
+    creator: "@mukes_dev",
+  },
+  icons: {
+    icon: "/images/profile.png",
+    shortcut: "/images/profile.png",
+    apple: "/images/profile.png",
   },
 };
 
@@ -36,6 +71,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* ✅ Favicon manually declared here */}
+        <link rel="icon" href="/images/profile.png" type="image/png" />
+      </head>
       <body className={`${inter.className} transition-colors duration-300`}>
         <ThemeProvider>
           {/* <CustomCursor /> */}
