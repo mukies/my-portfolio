@@ -1,10 +1,12 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { useTheme } from '@/context/ThemeContext';
-import { motion, AnimatePresence } from 'framer-motion';
-import ThemeToggle from './ThemeToggle';
-import { SlideTabs } from './SlideNavMenus';
+import { useState, useEffect, useRef } from "react";
+import { useTheme } from "@/context/ThemeContext";
+import { motion, AnimatePresence } from "framer-motion";
+import ThemeToggle from "./ThemeToggle";
+import { SlideTabs } from "./SlideNavMenus";
+import Image from "next/image";
+import Logo from "./Logo";
 
 // Position type for sliding tabs
 type Position = {
@@ -28,63 +30,63 @@ export default function Header() {
       setScrolled(window.scrollY > 50);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Animation variants
   const headerVariants = {
-    initial: { 
-      y: -100, 
+    initial: {
+      y: -100,
       opacity: 0,
-      backdropFilter: "blur(0px)"
+      backdropFilter: "blur(0px)",
     },
-    animate: { 
-      y: 0, 
+    animate: {
+      y: 0,
       opacity: 1,
       backdropFilter: scrolled ? "blur(12px)" : "blur(0px)",
       transition: {
         duration: 0.8,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    }
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
   };
 
   const logoVariants = {
-    initial: { 
+    initial: {
       scale: 0,
-      rotate: -180
+      rotate: -180,
     },
-    animate: { 
+    animate: {
       scale: 1,
       rotate: 0,
       transition: {
         duration: 1,
         ease: [0.22, 1, 0.36, 1],
-        delay: 0.2
-      }
+        delay: 0.2,
+      },
     },
     hover: {
       scale: 1.08,
       rotate: [0, -5, 5, 0],
       transition: {
         duration: 0.4,
-        ease: "easeInOut"
-      }
+        ease: "easeInOut",
+      },
     },
     tap: {
       scale: 0.95,
       transition: {
-        duration: 0.1
-      }
-    }
+        duration: 0.1,
+      },
+    },
   };
 
   const mobileMenuVariants = {
     initial: {
       opacity: 0,
       height: 0,
-      y: -20
+      y: -20,
     },
     animate: {
       opacity: 1,
@@ -93,8 +95,8 @@ export default function Header() {
       transition: {
         duration: 0.4,
         ease: [0.22, 1, 0.36, 1],
-        staggerChildren: 0.05
-      }
+        staggerChildren: 0.05,
+      },
     },
     exit: {
       opacity: 0,
@@ -102,73 +104,71 @@ export default function Header() {
       y: -20,
       transition: {
         duration: 0.3,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    }
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
   };
 
   const mobileItemVariants = {
     initial: {
       x: -20,
-      opacity: 0
+      opacity: 0,
     },
     animate: {
       x: 0,
       opacity: 1,
       transition: {
         duration: 0.3,
-        ease: "easeOut"
-      }
+        ease: "easeOut",
+      },
     },
     exit: {
       x: -20,
       opacity: 0,
       transition: {
-        duration: 0.2
-      }
+        duration: 0.2,
+      },
     },
     hover: {
       x: 8,
       backgroundColor: "rgba(59, 130, 246, 0.1)",
       transition: {
-        duration: 0.2
-      }
-    }
+        duration: 0.2,
+      },
+    },
   };
 
   const hamburgerVariants = {
     initial: { scale: 0 },
-    animate: { 
+    animate: {
       scale: 1,
       transition: {
         duration: 0.5,
         delay: 0.4,
-        ease: [0.22, 1, 0.36, 1]
-      }
+        ease: [0.22, 1, 0.36, 1],
+      },
     },
     hover: {
       scale: 1.1,
       transition: {
-        duration: 0.2
-      }
+        duration: 0.2,
+      },
     },
     tap: {
       scale: 0.9,
       transition: {
-        duration: 0.1
-      }
-    }
+        duration: 0.1,
+      },
+    },
   };
 
   const navItems = [
-    { name: 'home', href: '#home' },
-    { name: 'about', href: '#about' },
-    { name: 'projects', href: '#projects' },
-    { name: 'skills', href: '#skills' },
-    { name: 'contact', href: '#contact' }
+    { name: "home", href: "#home" },
+    { name: "about", href: "#about" },
+    { name: "projects", href: "#projects" },
+    { name: "skills", href: "#skills" },
+    { name: "contact", href: "#contact" },
   ];
-
-
 
   // Cursor Component
   const Cursor = ({ position }: { position: Position }) => {
@@ -184,12 +184,12 @@ export default function Header() {
           stiffness: 500,
           damping: 30,
           mass: 0.6,
-          velocity: 2
+          velocity: 2,
         }}
         className="absolute z-0 h-8 rounded-full bg-gradient-to-r from-blue-600 via-purple-600 to-violet-600 dark:from-blue-400 dark:via-purple-400 dark:to-violet-400 md:h-10"
         style={{
-          top: '50%',
-          transform: 'translateY(-50%)'
+          top: "50%",
+          transform: "translateY(-50%)",
         }}
       />
     );
@@ -199,8 +199,8 @@ export default function Header() {
     <motion.header
       className={`fixed top-0 left-0 right-0 z-50 py-4 px-6 transition-all duration-500 ${
         scrolled
-          ? 'bg-white/85 dark:bg-black/85 backdrop-blur-md shadow-lg border-b border-gray-200/20 dark:border-gray-700/20'
-          : 'bg-transparent border-transparent'
+          ? "bg-white/85 dark:bg-black/85 backdrop-blur-md shadow-lg border-b border-gray-200/20 dark:border-gray-700/20"
+          : "bg-transparent border-transparent"
       }`}
       variants={headerVariants}
       initial="initial"
@@ -208,38 +208,11 @@ export default function Header() {
     >
       <div className="container-custom flex justify-between items-center">
         {/* Logo */}
-       <motion.div           
-  className="text-center relative"           
-  variants={logoVariants}           
-  initial="initial"           
-  animate="animate"           
-  whileHover="hover"           
-  whileTap="tap"         
->           
-  <motion.a              
-    href="#"              
-    className="relative inline-block"           
-  >             
-    <div className="flex flex-col items-center">
-      <motion.span                
-        className="text-3xl font-bold text-transparent uppercase bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-violet-600 dark:from-blue-400 dark:via-purple-400 dark:to-violet-400"               
-        animate={{                 
-          backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],               
-        }}               
-        transition={{                 
-          duration: 3,                 
-          repeat: Infinity,                 
-          ease: "linear"               
-        }}             
-      >                
-        Mukesh             
-      </motion.span>             
-      <span className="text-base tracking-[5px] font-light text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-violet-600 dark:from-blue-400 dark:via-purple-400 dark:to-violet-400 -mt-1">              
-        portfolio             
-      </span>
-    </div>           
-  </motion.a>         
-</motion.div>
+        <div className="text-center relative">
+          <motion.a href="#" className="relative inline-block">
+            <Logo className=" w-14 lg:w-20" />
+          </motion.a>
+        </div>
 
         {/* Desktop Navigation - Sliding Tabs */}
         <nav className="hidden md:flex items-center space-x-6">
@@ -252,67 +225,66 @@ export default function Header() {
             }}
             className="relative flex w-fit rounded-full border-2 border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm p-1"
             initial={{ scale: 0, opacity: 0 }}
-            animate={{ 
-              scale: 1, 
+            animate={{
+              scale: 1,
               opacity: 1,
               transition: {
                 duration: 0.6,
                 delay: 0.4,
-                ease: [0.22, 1, 0.36, 1]
-              }
+                ease: [0.22, 1, 0.36, 1],
+              },
             }}
           >
-            <SlideTabs navLinks={navItems}/>
+            <SlideTabs navLinks={navItems} />
 
-          
             <Cursor position={position} />
           </motion.ul>
-          
+
           {/* Theme Toggle */}
           <motion.div
             initial={{ scale: 0, rotate: -180 }}
-            animate={{ 
-              scale: 1, 
+            animate={{
+              scale: 1,
               rotate: 0,
               transition: {
                 duration: 0.6,
                 delay: 0.8,
-                ease: [0.22, 1, 0.36, 1]
-              }
+                ease: [0.22, 1, 0.36, 1],
+              },
             }}
-            whileHover={{ 
+            whileHover={{
               scale: 1.1,
               rotate: 180,
-              transition: { duration: 0.3 }
+              transition: { duration: 0.3 },
             }}
-          >
-          </motion.div>
+          ></motion.div>
         </nav>
 
         {/* Mobile Menu Button and Theme Toggle */}
         <div className="md:hidden flex items-center space-x-4">
           <motion.div
             initial={{ scale: 0, rotate: -180 }}
-            animate={{ 
-              scale: 1, 
+            animate={{
+              scale: 1,
               rotate: 0,
               transition: {
                 duration: 0.6,
                 delay: 0.5,
-                ease: [0.22, 1, 0.36, 1]
-              }
+                ease: [0.22, 1, 0.36, 1],
+              },
             }}
-            whileHover={{ 
+            whileHover={{
               scale: 1.1,
               rotate: 180,
-              transition: { duration: 0.3 }
+              transition: { duration: 0.3 },
             }}
-          >
-          </motion.div>
-          
+          ></motion.div>
+
           <motion.button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`focus:outline-none p-2 rounded-lg hover:bg-gray-800 transition-colors ${scrolled ? 'text-white':'text-gray-300'}`}
+            className={`focus:outline-none p-2 rounded-lg hover:bg-gray-800 transition-colors ${
+              scrolled ? "text-white" : "text-gray-300"
+            }`}
             aria-label="Toggle menu"
             variants={hamburgerVariants}
             initial="initial"
@@ -321,7 +293,7 @@ export default function Header() {
             whileTap="tap"
           >
             <div className="w-6 flex flex-col items-end justify-center gap-1.5">
-              <motion.span 
+              <motion.span
                 className="block h-0.5 bg-current"
                 animate={{
                   width: mobileMenuOpen ? "24px" : "24px",
@@ -330,7 +302,7 @@ export default function Header() {
                 }}
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               />
-              <motion.span 
+              <motion.span
                 className="block h-0.5 bg-current"
                 animate={{
                   width: mobileMenuOpen ? "0px" : "16px",
@@ -338,7 +310,7 @@ export default function Header() {
                 }}
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               />
-              <motion.span 
+              <motion.span
                 className="block h-0.5 bg-current"
                 animate={{
                   width: mobileMenuOpen ? "24px" : "20px",
@@ -364,7 +336,7 @@ export default function Header() {
           >
             <ul className="flex flex-col py-4">
               {navItems.map((item, index) => (
-                <motion.li 
+                <motion.li
                   key={index}
                   variants={mobileItemVariants}
                   custom={index}
@@ -382,7 +354,7 @@ export default function Header() {
                       initial={{ scaleY: 0 }}
                       whileHover={{
                         scaleY: 1,
-                        transition: { duration: 0.2 }
+                        transition: { duration: 0.2 },
                       }}
                       style={{ originY: 0.5 }}
                     />
