@@ -10,19 +10,32 @@ import {
   useSpring,
 } from "framer-motion";
 
+interface ProjectsProps {
+  id: number;
+  title: string;
+  description: string;
+  image?: string;
+  video?: string;
+  tags: string[];
+  demoUrl?: string;
+  codeUrl?: string;
+  videoUrl?: string;
+  status: "live" | "ongoing";
+}
 // Mock projects data - replace with your actual data
-const projects = [
+const projects: ProjectsProps[] = [
   {
     id: 1,
-    title: "AI-Powered Dashboard",
+    title: "Yaphy Fitness (E-Commerce)",
     description:
-      "A comprehensive analytics dashboard with real-time data visualization and AI-driven insights for business intelligence.",
+      "Yaphy Fitness is a modern e-commerce platform featuring cart, wishlist, discount coupons, product variations, and a built-in blog. Built with Next.js using SSR and SSG for speed and SEO, it integrates Stripe for secure payments and includes an admin dashboard for managing products, orders, and content",
     image:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop",
     video: "",
-    tags: ["React", "TypeScript", "D3.js", "Node.js", "Python", "TensorFlow"],
-    demoUrl: "#",
-    codeUrl: "#",
+    tags: ["Next.js", "TypeScript", "Zustand", "Framer Motion", "Axios"],
+    demoUrl: "https://www.yaphyfitness.com/",
+    codeUrl: "https://github.com/mukies/yaphy-fitness",
+    status: "live",
   },
   {
     id: 2,
@@ -35,6 +48,7 @@ const projects = [
     demoUrl: "#",
     video: "",
     codeUrl: "#",
+    status: "live",
   },
   {
     id: 3,
@@ -47,6 +61,7 @@ const projects = [
     tags: ["React Native", "Firebase", "Socket.io", "Express", "AWS"],
     demoUrl: "#",
     codeUrl: "#",
+    status: "live",
   },
 ];
 
@@ -75,16 +90,19 @@ export default function Projects() {
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
 
   // Optimized mouse move handler with throttling
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
-      const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
-      mouseX.set(x * 20); // Reduced from 30 to 20
-      mouseY.set(y * 20);
-      setMousePosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-    }
-  }, [mouseX, mouseY]);
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
+        const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
+        mouseX.set(x * 20); // Reduced from 30 to 20
+        mouseY.set(y * 20);
+        setMousePosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+      }
+    },
+    [mouseX, mouseY]
+  );
 
   // Throttled mouse move handler
   useEffect(() => {
@@ -104,8 +122,11 @@ export default function Projects() {
 
     const container = containerRef.current;
     if (container) {
-      container.addEventListener("mousemove", throttledMouseMove, { passive: true });
-      return () => container.removeEventListener("mousemove", throttledMouseMove);
+      container.addEventListener("mousemove", throttledMouseMove, {
+        passive: true,
+      });
+      return () =>
+        container.removeEventListener("mousemove", throttledMouseMove);
     }
   }, [handleMouseMove]);
 
@@ -142,12 +163,12 @@ export default function Projects() {
       id="projects"
       className="relative py-20 md:py-32 bg-gradient-to-b from-slate-900 via-blue-950 to-indigo-950 overflow-hidden"
       ref={containerRef}
-      style={{ willChange: 'auto' }} // Optimize for performance
+      style={{ willChange: "auto" }} // Optimize for performance
     >
       {/* Simplified background elements */}
       <motion.div
         className="absolute inset-0 opacity-30" // Reduced from 40
-        style={{ y: backgroundY, willChange: 'transform' }}
+        style={{ y: backgroundY, willChange: "transform" }}
       >
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-gradient-to-br from-cyan-400/10 to-teal-400/10 rounded-full blur-3xl"></div>
@@ -159,7 +180,7 @@ export default function Projects() {
         className="absolute inset-0 opacity-15 pointer-events-none transition-opacity duration-700" // Increased duration for smoother transition
         style={{
           background: `radial-gradient(300px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(59, 130, 246, 0.06), transparent 70%)`,
-          willChange: 'background-position'
+          willChange: "background-position",
         }}
       />
 
@@ -169,7 +190,7 @@ export default function Projects() {
         style={{
           y: floatingY,
           x: useTransform(mouseXSpring, [-20, 20], [-5, 5]), // Reduced range
-          willChange: 'transform'
+          willChange: "transform",
         }}
       >
         <div className="absolute top-20 right-1/4 w-2 h-2 bg-blue-500/20 rounded-full animate-pulse"></div>
@@ -184,7 +205,7 @@ export default function Projects() {
           style={{
             y: headerY,
             x: useTransform(mouseXSpring, [-20, 20], [-3, 3]), // Reduced range
-            willChange: 'transform'
+            willChange: "transform",
           }}
         >
           <motion.div
@@ -205,7 +226,7 @@ export default function Projects() {
 
           <motion.div
             className="text-center max-w-4xl mx-auto mb-8"
-            style={{ y: textY, willChange: 'transform' }}
+            style={{ y: textY, willChange: "transform" }}
           >
             <motion.div
               className="inline-block"
@@ -254,7 +275,7 @@ export default function Projects() {
               className="relative"
               variants={itemVariants}
               id={`project-${project.id}`}
-              style={{ willChange: 'transform, opacity' }}
+              style={{ willChange: "transform, opacity" }}
             >
               {/* Project Container with proper spacing */}
               <div
@@ -299,7 +320,6 @@ export default function Projects() {
                             className="px-3 py-1 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-950/50 text-blue-700 dark:text-blue-300 rounded-lg text-xs font-medium border border-blue-200/50 dark:border-blue-800/50"
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: tagIndex * 0.05 + 0.2 }} // Reduced delays
                             whileHover={{ scale: 1.03 }} // Reduced scale
                           >
                             {tag}
@@ -319,7 +339,6 @@ export default function Projects() {
                       initial={{ scale: 0, rotate: -180 }}
                       animate={{ scale: 1, rotate: 0 }}
                       transition={{
-                        delay: index * 0.1 + 0.3, // Reduced delays
                         duration: 0.6, // Reduced duration
                         type: "spring",
                         bounce: 0.3, // Reduced bounce
@@ -339,11 +358,22 @@ export default function Projects() {
                   `}
                 >
                   {/* Status indicator */}
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <span className="text-sm font-medium text-green-600 dark:text-green-400">
-                      Live Project
-                    </span>
+                  <div className="flex items-center  gap-2">
+                    {project.status === "live" ? (
+                      <>
+                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        <span className="text-sm font-medium text-green-600 dark:text-green-400">
+                          Live Project
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+                        <span className="text-sm font-medium text-orange-500 dark:text-orange-400">
+                          Ongoing Project
+                        </span>
+                      </>
+                    )}
                   </div>
 
                   {/* Project title and description */}
@@ -373,7 +403,6 @@ export default function Projects() {
                           className="flex items-center gap-2 p-3 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-200/50 dark:border-gray-700/50"
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: tagIndex * 0.03 + 0.3 }} // Reduced delays
                           whileHover={{
                             y: -1, // Reduced from -2
                             backgroundColor: "rgba(59, 130, 246, 0.05)",
@@ -390,54 +419,66 @@ export default function Projects() {
 
                   {/* Action buttons */}
                   <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                    <motion.a
-                      href={project.demoUrl}
-                      className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ y: -1, scale: 1.01 }} // Reduced effects
-                      whileTap={{ scale: 0.99 }} // Reduced effect
-                    >
-                      <span>Explore Live</span>
-                      <motion.svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        whileHover={{ x: 1 }} // Reduced from 2
+                    {(project.demoUrl || project.videoUrl) && (
+                      <motion.a
+                        href={
+                          project.status === "live"
+                            ? project?.demoUrl || "#"
+                            : project?.videoUrl || "#"
+                        }
+                        className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ y: -1, scale: 1.01 }} // Reduced effects
+                        whileTap={{ scale: 0.99 }} // Reduced effect
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                      </motion.svg>
-                    </motion.a>
+                        <span>
+                          {project.status === "live"
+                            ? "Explore Live"
+                            : "Explore Video"}
+                        </span>
+                        <motion.svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          whileHover={{ x: 1 }} // Reduced from 2
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                          />
+                        </motion.svg>
+                      </motion.a>
+                    )}
 
-                    <motion.a
-                      href={project.codeUrl}
-                      className="inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-semibold hover:border-gray-400 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-300"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ y: -1, scale: 1.01 }} // Reduced effects
-                      whileTap={{ scale: 0.99 }} // Reduced effect
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                    {project.codeUrl && (
+                      <motion.a
+                        href={project?.codeUrl}
+                        className="inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-semibold hover:border-gray-400 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-300"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ y: -1, scale: 1.01 }} // Reduced effects
+                        whileTap={{ scale: 0.99 }} // Reduced effect
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-                        />
-                      </svg>
-                      <span>View Code</span>
-                    </motion.a>
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                          />
+                        </svg>
+                        <span>View Code</span>
+                      </motion.a>
+                    )}
                   </div>
                 </motion.div>
               </div>
@@ -450,7 +491,7 @@ export default function Projects() {
           className="text-center mt-32 pt-16 border-t border-gray-200/50 dark:border-gray-800/50"
           initial={{ opacity: 0, y: 30 }} // Reduced from 50
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8, delay: 0.8 }} // Reduced delay
+          transition={{ duration: 0.8,}} // Reduced delay
         >
           <motion.div
             className="max-w-3xl mx-auto space-y-6"
