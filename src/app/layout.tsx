@@ -74,6 +74,7 @@ export default function RootLayout({
       <head>
         {/* ✅ Favicon manually declared here */}
         <link rel="icon" href="/images/profile.png" type="image/png" />
+          <meta name="publisher" content="Mukesh Bhattarai" />
       </head>
       <body className={`${inter.className} transition-colors duration-300`}>
         <ThemeProvider>
