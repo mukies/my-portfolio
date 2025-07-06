@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 
 export default function AboutMe() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -273,12 +274,15 @@ export default function AboutMe() {
               {/* Profile Image */}
               <div className="relative p-4 sm:p-6 lg:p-8">
                 <div className="relative w-full aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900">
-                  <img
-                    src="/images/profile.jpg"
-                    alt="Profile"
-                    className="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-105"
-                    loading="lazy"
-                  />
+                  <div className="relative w-full h-full">
+                    <Image
+                      fill
+                      src="/images/me2.jpeg"
+                      alt="Profile"
+                      className="w-full h-full object-cover object-left  transition-transform duration-700 scale-110"
+                      loading="lazy"
+                    />
+                  </div>
 
                   {/* Image Overlay Effect */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500" />
