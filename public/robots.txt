@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://mukeshbhattarai.com
+
+# Sitemaps
+Sitemap: https://mukeshbhattarai.com/sitemap.xml

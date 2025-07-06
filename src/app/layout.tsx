@@ -2,7 +2,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { ThemeProvider } from "@/context/ThemeContext";
-import CustomCursor from "@/components/CustomCursor";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -73,7 +72,6 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* ✅ Favicon manually declared here */}
-        <link rel="icon" href="/images/profile.png" type="image/png" />
           <meta name="publisher" content="Mukesh Bhattarai" />
       </head>
       <body className={`${inter.className} transition-colors duration-300`}>
