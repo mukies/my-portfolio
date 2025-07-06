@@ -27,7 +27,7 @@ export const metadata = {
     "Frontend Portfolio",
     "Hire Developer Nepal",
   ],
-  metadataBase: new URL("https://mukeshbhattarai.com"), 
+  metadataBase: new URL("https://mukeshbhattarai.com"),
   alternates: {
     canonical: "https://mukeshbhattarai.com",
   },
@@ -72,7 +72,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* ✅ Favicon manually declared here */}
-          <meta name="publisher" content="Mukesh Bhattarai" />
+        <meta name="publisher" content="Mukesh Bhattarai" />
+        <meta name="robots" content="index, follow" />
       </head>
       <body className={`${inter.className} transition-colors duration-300`}>
         <ThemeProvider>
