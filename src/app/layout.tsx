@@ -112,7 +112,7 @@ export default function RootLayout({
           {/* <CustomCursor /> */}
           <Header />
           <main>{children}</main>
-          <Footer />
+          {/* <Footer /> */}
         </ThemeProvider>
       </body>
     </html>

@@ -9,61 +9,8 @@ import {
   useMotionValue,
   useSpring,
 } from "framer-motion";
-
-interface ProjectsProps {
-  id: number;
-  title: string;
-  description: string;
-  image?: string;
-  video?: string;
-  tags: string[];
-  demoUrl?: string;
-  codeUrl?: string;
-  videoUrl?: string;
-  status: "live" | "ongoing";
-}
-// Mock projects data - replace with your actual data
-const projects: ProjectsProps[] = [
-  {
-    id: 1,
-    title: "Yaphy Fitness (E-Commerce)",
-    description:
-      "Yaphy Fitness is a modern e-commerce platform featuring cart, wishlist, discount coupons, product variations, and a built-in blog. Built with Next.js using SSR and SSG for speed and SEO, it integrates Stripe for secure payments and includes an admin dashboard for managing products, orders, and content",
-    image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop",
-    video: "",
-    tags: ["Next.js", "TypeScript", "Zustand", "Framer Motion", "Axios"],
-    demoUrl: "https://www.yaphyfitness.com/",
-    codeUrl: "https://github.com/mukies/yaphy-fitness",
-    status: "live",
-  },
-  {
-    id: 2,
-    title: "E-Commerce Platform",
-    description:
-      "Modern e-commerce solution with seamless user experience, payment integration, and advanced inventory management.",
-    image:
-      "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=500&fit=crop",
-    tags: ["Next.js", "Stripe", "MongoDB", "Tailwind CSS", "Redux"],
-    demoUrl: "#",
-    video: "",
-    codeUrl: "#",
-    status: "live",
-  },
-  {
-    id: 3,
-    title: "Social Media App",
-    description:
-      "Full-featured social platform with real-time messaging, content sharing, and advanced user engagement features.",
-    image:
-      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=500&fit=crop",
-    video: "",
-    tags: ["React Native", "Firebase", "Socket.io", "Express", "AWS"],
-    demoUrl: "#",
-    codeUrl: "#",
-    status: "live",
-  },
-];
+import { projects } from "@/lib/data";
+import { CodeXml, ExternalLink, Video } from "lucide-react";
 
 export default function Projects() {
   const ref = useRef<HTMLDivElement>(null);
@@ -419,38 +366,17 @@ export default function Projects() {
 
                   {/* Action buttons */}
                   <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                    {(project.demoUrl || project.videoUrl) && (
+                    {project.demoUrl && (
                       <motion.a
-                        href={
-                          project.status === "live"
-                            ? project?.demoUrl || "#"
-                            : project?.videoUrl || "#"
-                        }
-                        className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg"
+                        href={project?.demoUrl}
+                        className="inline-flex items-center justify-center gap-3 px-5 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg"
                         target="_blank"
                         rel="noopener noreferrer"
                         whileHover={{ y: -1, scale: 1.01 }} // Reduced effects
                         whileTap={{ scale: 0.99 }} // Reduced effect
                       >
-                        <span>
-                          {project.status === "live"
-                            ? "Explore Live"
-                            : "Explore Video"}
-                        </span>
-                        <motion.svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          whileHover={{ x: 1 }} // Reduced from 2
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                          />
-                        </motion.svg>
+                        <span>Explore Live</span>
+                        <ExternalLink />
                       </motion.a>
                     )}
 
@@ -460,23 +386,25 @@ export default function Projects() {
                         className="inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-semibold hover:border-gray-400 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-300"
                         target="_blank"
                         rel="noopener noreferrer"
+                        whileHover={{ y: -1, scale: 1.01 }}
+                        whileTap={{ scale: 0.99 }}
+                      >
+                        <CodeXml />
+                        <span>View Code</span>
+                      </motion.a>
+                    )}
+
+                    {project.videoUrl && (
+                      <motion.a
+                        href={project?.videoUrl}
+                        className="inline-flex items-center justify-center gap-3 px-5 py-4 bg-gradient-to-r from-purple-600 to-violet-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-violet-700 transition-all duration-300 shadow-lg"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         whileHover={{ y: -1, scale: 1.01 }} // Reduced effects
                         whileTap={{ scale: 0.99 }} // Reduced effect
                       >
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-                          />
-                        </svg>
-                        <span>View Code</span>
+                        <Video />
+                        <span>Video Clip</span>
                       </motion.a>
                     )}
                   </div>
@@ -488,31 +416,25 @@ export default function Projects() {
 
         {/* Optimized CTA Section */}
         <motion.div
-          className="text-center mt-32 pt-16 border-t border-gray-200/50 dark:border-gray-800/50"
+          className="text-center mt-14 lg:mt-32  border-t border-gray-200/50 dark:border-gray-800/50"
           initial={{ opacity: 0, y: 30 }} // Reduced from 50
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8,}} // Reduced delay
+          transition={{ duration: 0.8 }} // Reduced delay
         >
           <motion.div
             className="max-w-3xl mx-auto space-y-6"
             whileHover={{ scale: 1.005 }} // Reduced from 1.01
             transition={{ duration: 0.2 }} // Reduced duration
           >
-            <h3 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-              Ready to bring your vision to life?
-            </h3>
-            <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-              Let's collaborate on your next groundbreaking project and create
-              something extraordinary together.
-            </p>
-
             <motion.a
-              href="#contact"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-gray-900 to-blue-900 dark:from-white dark:to-blue-100 text-white dark:text-gray-900 rounded-xl font-semibold hover:from-gray-800 hover:to-blue-800 dark:hover:from-gray-100 dark:hover:to-blue-200 transition-all duration-300 shadow-xl"
+              href="https://www.linkedin.com/in/mukesh-bhattarai-720238157/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-4 lg:px-8 py-4 bg-gradient-to-r from-gray-900 to-blue-900 dark:from-white dark:to-blue-100 text-white dark:text-gray-900 rounded-xl font-semibold hover:from-gray-800 hover:to-blue-800 dark:hover:from-gray-100 dark:hover:to-blue-200 transition-all duration-300 shadow-xl"
               whileHover={{ y: -2, scale: 1.03 }} // Reduced effects
               whileTap={{ scale: 0.97 }} // Reduced effect
             >
-              <span>Start Your Project</span>
+              <span>More Projects on my LinkedIn</span>
               <motion.svg
                 className="w-5 h-5"
                 fill="none"

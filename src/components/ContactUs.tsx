@@ -174,7 +174,10 @@ export default function Contact() {
         />
       ))}
 
-      <div className="container mx-auto px-0 lg:px-5 relative z-10" ref={containerRef}>
+      <div
+        className="container mx-auto px-0 lg:px-5 relative z-10"
+        ref={containerRef}
+      >
         <motion.div
           className="text-center max-w-4xl mx-auto mb-20"
           variants={containerVariants}
@@ -312,7 +315,6 @@ export default function Contact() {
               },
             ].map((item, index) => (
               <motion.div
-              
                 key={index}
                 variants={itemVariants}
                 initial="rest"
@@ -348,36 +350,37 @@ export default function Contact() {
                     {item.info}
                   </p>
 
-                  {item.action &&<motion.a
-                    href={item.href}
-                    
-                    className={`inline-flex cursor-pointer z-[9999] items-center text-transparent bg-gradient-to-r ${item.gradient} bg-clip-text font-semibold hover:opacity-80 transition-opacity group`}
-                    whileHover={{ x: 3 }}
-                    transition={{ type: "spring", stiffness: 400 }}
-                  >
-                    {item.action}
-                    <motion.svg
-                      className="w-4 h-4 ml-2 text-blue-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                  {item.action && (
+                    <motion.a
+                      href={item.href}
+                      className={`inline-flex cursor-pointer z-[9999] items-center text-transparent bg-gradient-to-r ${item.gradient} bg-clip-text font-semibold hover:opacity-80 transition-opacity group`}
                       whileHover={{ x: 3 }}
                       transition={{ type: "spring", stiffness: 400 }}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </motion.svg>
-                  </motion.a>}
+                      {item.action}
+                      <motion.svg
+                        className="w-4 h-4 ml-2 text-blue-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        whileHover={{ x: 3 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
+                      </motion.svg>
+                    </motion.a>
+                  )}
 
                   {index === 2 && (
                     <div className="flex space-x-4 mt-6">
                       {socialMedia.map((social, i) => (
                         <motion.a
-                        target="_blank"
+                          target="_blank"
                           key={social.id}
                           href={social.url}
                           className="w-10 h-10 sm:w-12 sm:h-12 relative overflow-hidden rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer hover:border-blue-500/50 transition-all duration-300 shadow-lg"
@@ -417,7 +420,6 @@ export default function Contact() {
           >
             <motion.div
               className="relative bg-gray-800/80 backdrop-blur-xl p-5 lg:p-10 rounded-3xl shadow-2xl border border-white/20 dark:border-gray-700/30 overflow-hidden"
-              whileHover={{ y: -5 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
               {/* Animated background gradient */}
