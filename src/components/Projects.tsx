@@ -184,7 +184,7 @@ export default function Projects() {
               transition={{ duration: 0.6, type: "spring" }} // Reduced duration
             >
               <h2 className="text-5xl md:text-7xl font-bold mb-5 bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent">
-                Creative Projects
+                My Projects
               </h2>
             </motion.div>
 
