@@ -278,7 +278,7 @@ export default function AboutMe() {
                     <Image
                       fill
                       src="/images/me2.jpeg"
-                      alt="Profile"
+                      alt="Mukesh Bhattarai"
                       className="w-full h-full object-cover object-left  transition-transform duration-700 scale-110"
                       loading="lazy"
                     />
