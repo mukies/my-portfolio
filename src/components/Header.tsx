@@ -7,6 +7,7 @@ import ThemeToggle from "./ThemeToggle";
 import { SlideTabs } from "./SlideNavMenus";
 import Image from "next/image";
 import Logo from "./Logo";
+import Link from "next/link";
 
 // Position type for sliding tabs
 type Position = {
@@ -240,7 +241,6 @@ export default function Header() {
             <Cursor position={position} />
           </motion.ul>
 
-          {/* Theme Toggle */}
           <motion.div
             initial={{ scale: 0, rotate: -180 }}
             animate={{
@@ -343,9 +343,9 @@ export default function Header() {
                   whileHover="hover"
                   whileTap={{ scale: 0.98 }}
                 >
-                  <motion.a
-                    href={`${item.href.toLowerCase()}`}
-                    className="block py-4 px-6 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 font-medium relative"
+                  <Link
+                    href={`${item.href}`}
+                    className="block py-4 px-6 capitalize text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 font-medium relative"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {item.name}
@@ -358,7 +358,7 @@ export default function Header() {
                       }}
                       style={{ originY: 0.5 }}
                     />
-                  </motion.a>
+                  </Link>
                 </motion.li>
               ))}
             </ul>

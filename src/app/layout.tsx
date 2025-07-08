@@ -3,13 +3,12 @@ import "./globals.css";
 
 import { ThemeProvider } from "@/context/ThemeContext";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Mukesh Bhattarai | Frontend Developer & MERN Stack Expert",
+  title: "Mukesh Bhattarai | React & Next.js Specialist with Full-Stack MERN Skills",
   description:
     "Mukesh Bhattarai's portfolio — showcasing skills in React, Next.js, and MERN stack with real-world projects and frontend expertise.",
   keywords: [
@@ -33,7 +32,7 @@ export const metadata = {
     canonical: "https://mukeshbhattarai.com",
   },
   openGraph: {
-    title: "Mukesh Bhattarai | Frontend Developer & MERN Stack Expert",
+    title: "Mukesh Bhattarai | React & Next.js Specialist with Full-Stack MERN Skills",
     description:
       "Discover the professional portfolio of Mukesh Bhattarai — showcasing frontend development skills, MERN stack projects, and career achievements.",
     url: "https://mukeshbhattarai.com",
@@ -51,7 +50,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mukesh Bhattarai | Frontend Developer & MERN Stack Expert",
+    title: "Mukesh Bhattarai | React & Next.js Specialist with Full-Stack MERN Skills",
     description:
       "Explore the portfolio of Mukesh Bhattarai, showcasing expertise in React, Next.js, Node.js, and modern frontend technologies.",
     images: ["/images/profile.png"],
